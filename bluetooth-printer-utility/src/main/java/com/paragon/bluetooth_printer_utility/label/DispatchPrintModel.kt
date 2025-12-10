@@ -9,15 +9,18 @@ data class DispatchPrintModel(
     val barcode: String?,
     val postalProvider: String?,
     val mailDate: String?,
+    val consolidatorPass: String? = null,
     val zplTemplate: String?
 ) : Parcelable, Printable {
 
     override fun getVariables(): MutableMap<Int, String> {
+        val pass = if (consolidatorPass?.isNotBlank() == true) "Consolidator Pass: $consolidatorPass" else ""
         return HashMap<Int, String>().also {
             it[1] = barcode         ?: ""       // 1 | number
             it[2] = barcode         ?: ""       // 2 | barcode
             it[3] = postalProvider  ?: ""       // 3 | postal provider
             it[4] = mailDate        ?: ""       // 4 | mail date
+            it[5] = pass                        // 5 | consolidator pass
         }
     }
 

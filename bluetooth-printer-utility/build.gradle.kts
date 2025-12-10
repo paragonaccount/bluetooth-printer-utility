@@ -5,6 +5,9 @@ plugins {
     id("maven-publish")
 }
 
+group = "com.github.paragonaccount"
+version = "1.0.2"
+
 android {
     namespace = "com.paragon.bluetooth_printer_utility"
     compileSdk = 34
@@ -38,14 +41,17 @@ dependencies {
     implementation(files("libs/ZSDK_ANDROID_API.jar"))
 }
 
-afterEvaluate {
-    android.libraryVariants.forEach { variant ->
-        publishing.publications.create<MavenPublication>(variant.name) {
-            groupId = "com.paragon"
-            artifactId = "bluetooth-printer-utility"
-            version = "1.0.1"
-
-            from(components.findByName(variant.name))
+publishing {
+    publications {
+        afterEvaluate {
+            android.libraryVariants.forEach { variant ->
+                create<MavenPublication>(variant.name) {
+                    groupId = project.group.toString()
+                    artifactId = "bluetooth-printer-utility"
+                    version = project.version.toString()
+                    from(components.findByName(variant.name))
+                }
+            }
         }
     }
 }
